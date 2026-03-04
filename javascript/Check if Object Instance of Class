@@ -1,0 +1,20 @@
+var checkIfInstanceOf = function(obj, classFunction) {
+    // Basic null checks: primitives like 5 are fine, but null/undefined have no prototype
+    if (obj === null || obj === undefined || typeof classFunction !== 'function') {
+        return false;
+    }
+
+    // Get the first link in the prototype chain
+    let proto = Object.getPrototypeOf(obj);
+
+    while (proto !== null) {
+        // If we find the class's prototype, it's an instance
+        if (proto === classFunction.prototype) {
+            return true;
+        }
+        // Keep climbing up the chain
+        proto = Object.getPrototypeOf(proto);
+    }
+
+    return false;
+};
