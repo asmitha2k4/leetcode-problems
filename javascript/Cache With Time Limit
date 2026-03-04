@@ -1,0 +1,45 @@
+var TimeLimitedCache = function() {
+    this.cache = new Map(); // Stores { key: [value, timeoutId] }
+};
+
+/** 
+ * @param {number} key
+ * @param {number} value
+ * @param {number} duration
+ * @return {boolean}
+ */
+TimeLimitedCache.prototype.set = function(key, value, duration) {
+    const found = this.cache.has(key);
+    
+    // If it exists, clear the old timeout so it doesn't delete the new data
+    if (found) {
+        clearTimeout(this.cache.get(key)[1]);
+    }
+    
+    // Set a new timeout to delete the key after duration
+    const timeoutId = setTimeout(() => {
+        this.cache.delete(key);
+    }, duration);
+    
+    this.cache.set(key, [value, timeoutId]);
+    
+    return found;
+};
+
+/** 
+ * @param {number} key
+ * @return {number}
+ */
+TimeLimitedCache.prototype.get = function(key) {
+    if (this.cache.has(key)) {
+        return this.cache.get(key)[0];
+    }
+    return -1;
+};
+
+/** 
+ * @return {number}
+ */
+TimeLimitedCache.prototype.count = function() {
+    return this.cache.size;
+};
