@@ -1,0 +1,37 @@
+import java.util.*;
+
+class Solution {
+    public String simplifyPath(String path) {
+        // Use a stack to keep track of the directory names
+        Stack<String> stack = new Stack<>();
+        
+        // Split by one or more slashes
+        String[] components = path.split("/");
+        
+        for (String part : components) {
+            // If it's empty (from //) or a single dot (current dir), do nothing
+            if (part.equals("") || part.equals(".")) {
+                continue;
+            }
+            
+            if (part.equals("..")) {
+                // Go up one level: pop from stack if it's not empty
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            } else {
+                // It's a valid directory or file name (like "home" or "...")
+                stack.push(part);
+            }
+        }
+        
+        // Build the final path
+        StringBuilder result = new StringBuilder();
+        for (String dir : stack) {
+            result.append("/").append(dir);
+        }
+        
+        // If the stack was empty, we are at the root "/"
+        return result.length() == 0 ? "/" : result.toString();
+    }
+}
