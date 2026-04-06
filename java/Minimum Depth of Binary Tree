@@ -1,0 +1,16 @@
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        
+        // If one child is null, we must follow the other path
+        if (root.left == null || root.right == null) {
+            return left + right + 1;
+        }
+        
+        // If both children exist, take the minimum of the two
+        return Math.min(left, right) + 1;
+    }
+}
