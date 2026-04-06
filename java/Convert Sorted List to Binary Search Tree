@@ -1,0 +1,31 @@
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return new TreeNode(head.val);
+
+        // 1. Find the middle of the linked list
+        ListNode prev = null;
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // 2. Disconnect the left half from the middle node
+        if (prev != null) prev.next = null;
+
+        // 3. Middle node becomes the root
+        TreeNode root = new TreeNode(slow.val);
+
+        // 4. Recursively build left and right subtrees
+        // Left part is from head to prev
+        root.left = sortedListToBST(head);
+        // Right part is everything after the middle node (slow)
+        root.right = sortedListToBST(slow.next);
+
+        return root;
+    }
+}
