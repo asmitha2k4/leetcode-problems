@@ -1,0 +1,21 @@
+class Solution {
+    // Keeps track of the node that will be the 'next' in our flattened list
+    private TreeNode prev = null;
+
+    public void flatten(TreeNode root) {
+        if (root == null) return;
+
+        // 1. Traverse in Reverse Pre-order: Right -> Left -> Root
+        flatten(root.right);
+        flatten(root.left);
+
+        // 2. Flattening Logic:
+        // Set the right child to the previously processed node
+        root.right = prev;
+        // The left child must always be null
+        root.left = null;
+        
+        // 3. Current node becomes 'prev' for the next step up the recursion
+        prev = root;
+    }
+}
