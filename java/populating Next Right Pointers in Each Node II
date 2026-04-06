@@ -1,0 +1,29 @@
+class Solution {
+    public Node connect(Node root) {
+        Node curr = root; // Current node on the parent level
+        
+        while (curr != null) {
+            Node dummy = new Node(0); // Head of the next level's linked list
+            Node temp = dummy; // Tail of the next level's linked list
+            
+            // Iterate through the current level and link its children
+            while (curr != null) {
+                if (curr.left != null) {
+                    temp.next = curr.left;
+                    temp = temp.next;
+                }
+                if (curr.right != null) {
+                    temp.next = curr.right;
+                    temp = temp.next;
+                }
+                // Move to the next node in the current parent level
+                curr = curr.next;
+            }
+            
+            // Move down to the first node of the next level
+            curr = dummy.next;
+        }
+        
+        return root;
+    }
+}
