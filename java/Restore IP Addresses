@@ -1,0 +1,39 @@
+import java.util.*;
+
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        List<String> res = new ArrayList<>();
+        if (s.length() < 4 || s.length() > 12) return res;
+        backtrack(s, res, new ArrayList<>(), 0);
+        return res;
+    }
+
+    private void backtrack(String s, List<String> res, List<String> temp, int start) {
+        // Base case: 4 segments found and we used the whole string
+        if (temp.size() == 4) {
+            if (start == s.length()) {
+                res.add(String.join(".", temp));
+            }
+            return;
+        }
+
+        // Try segments of length 1, 2, and 3
+        for (int len = 1; len <= 3; len++) {
+            if (start + len > s.length()) break;
+            
+            String segment = s.substring(start, start + len);
+            
+            // Validation: 
+            // 1. No leading zeros (unless the segment is just "0")
+            // 2. Value must be <= 255
+            if ((segment.startsWith("0") && segment.length() > 1) || 
+                (len == 3 && Integer.parseInt(segment) > 255)) {
+                continue;
+            }
+
+            temp.add(segment);
+            backtrack(s, res, temp, start + len);
+            temp.remove(temp.size() - 1); // Backtrack
+        }
+    }
+}
