@@ -1,0 +1,16 @@
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) return true;
+        return isMirror(root.left, root.right);
+    }
+
+    private boolean isMirror(TreeNode t1, TreeNode t2) {
+        // Both are null, so they match
+        if (t1 == null && t2 == null) return true;
+        // Only one is null, or values don't match
+        if (t1 == null || t2 == null || t1.val != t2.val) return false;
+        
+        // Compare outer children and inner children
+        return isMirror(t1.left, t2.right) && isMirror(t1.right, t2.left);
+    }
+}
