@@ -1,0 +1,26 @@
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        // Dummy node points to head to simplify edge cases
+        ListNode dummy = new ListNode(0, head);
+        ListNode prev = dummy;
+        
+        while (head != null) {
+            // If it's the start of a duplicate sequence
+            if (head.next != null && head.val == head.next.val) {
+                // Move head to the end of the duplicate sequence
+                while (head.next != null && head.val == head.next.val) {
+                    head = head.next;
+                }
+                // Skip all duplicates by linking prev to the node after the sequence
+                prev.next = head.next;
+            } else {
+                // No duplicate found, just move the prev pointer
+                prev = prev.next;
+            }
+            // Move forward in the list
+            head = head.next;
+        }
+        
+        return dummy.next;
+    }
+}
