@@ -1,0 +1,30 @@
+class Solution {
+    public int numDistinct(String s, String t) {
+        int n = s.length();
+        int m = t.length();
+        
+        // dp[i][j] means ways to form t[0...i-1] using s[0...j-1]
+        int[][] dp = new int[m + 1][n + 1];
+        
+        // Base case: If t is empty, there is exactly 1 subsequence (the empty one)
+        for (int j = 0; j <= n; j++) {
+            dp[0][j] = 1;
+        }
+        
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // If characters match, we have two choices:
+                // 1. Use s[j-1] to match t[i-1] -> dp[i-1][j-1]
+                // 2. Ignore s[j-1] and look for t[i-1] in earlier part of s -> dp[i][j-1]
+                if (t.charAt(i - 1) == s.charAt(j - 1)) {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+                } else {
+                    // Characters don't match, we must skip s[j-1]
+                    dp[i][j] = dp[i][j - 1];
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+}
