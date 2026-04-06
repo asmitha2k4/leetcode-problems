@@ -1,0 +1,30 @@
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return null;
+        
+        Node levelStart = root;
+        
+        // While there is a level below the current one
+        while (levelStart.left != null) {
+            Node curr = levelStart;
+            
+            while (curr != null) {
+                // Connection 1: Connect the two children of the same parent
+                curr.left.next = curr.right;
+                
+                // Connection 2: Connect the right child to the next node's left child
+                if (curr.next != null) {
+                    curr.right.next = curr.next.left;
+                }
+                
+                // Move to the next node on the current level
+                curr = curr.next;
+            }
+            
+            // Move down to the start of the next level
+            levelStart = levelStart.left;
+        }
+        
+        return root;
+    }
+}
