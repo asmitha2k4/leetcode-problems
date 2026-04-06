@@ -1,0 +1,30 @@
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        // Dummy nodes to start the two separate lists
+        ListNode lessHead = new ListNode(0);
+        ListNode greaterHead = new ListNode(0);
+        
+        // Pointers to track the current end of each list
+        ListNode less = lessHead;
+        ListNode greater = greaterHead;
+        
+        while (head != null) {
+            if (head.val < x) {
+                less.next = head;
+                less = less.next;
+            } else {
+                greater.next = head;
+                greater = greater.next;
+            }
+            head = head.next;
+        }
+        
+        // Important: terminate the "greater" list to avoid cycles
+        greater.next = null;
+        
+        // Connect the "less" list to the start of the "greater" list
+        less.next = greaterHead.next;
+        
+        return lessHead.next;
+    }
+}
