@@ -1,0 +1,29 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices == null || prices.length == 0) {
+            return 0;
+        }
+
+        // Initialise variables for the 4 states
+        int firstBuy = Integer.MIN_VALUE;
+        int firstSell = 0;
+        int secondBuy = Integer.MIN_VALUE;
+        int secondSell = 0;
+
+        for (int price : prices) {
+            // 1. First Buy: Maximize balance (minimize price paid)
+            firstBuy = Math.max(firstBuy, -price);
+
+            // 2. First Sell: Maximize profit from the first transaction
+            firstSell = Math.max(firstSell, firstBuy + price);
+
+            // 3. Second Buy: Maximize balance after reinvesting firstSell profit
+            secondBuy = Math.max(secondBuy, firstSell - price);
+
+            // 4. Second Sell: Maximize total profit from both transactions
+            secondSell = Math.max(secondSell, secondBuy + price);
+        }
+
+        return secondSell;
+    }
+}
