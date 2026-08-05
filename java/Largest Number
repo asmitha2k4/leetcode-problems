@@ -1,0 +1,36 @@
+import java.util.Arrays;
+import java.util.Comparator;
+
+class Solution {
+    public String largestNumber(int[] nums) {
+        // Convert the primitive integer array to a String array
+        String[] strNums = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            strNums[i] = String.valueOf(nums[i]);
+        }
+
+        // Sort using a custom comparator to compare combined variations (b+a vs a+b)
+        Arrays.sort(strNums, new Comparator<String>() {
+            @Override
+            public int compare(String a, String b) {
+                String order1 = b + a;
+                String order2 = a + b;
+                return order1.compareTo(order2); // Sorts in descending order of value
+            }
+        });
+
+        // Edge case: If the largest number after sorting is "0", the whole number is 0
+        // (This happens for inputs like [0, 0, 0] to prevent returning "000")
+        if (strNums[0].equals("0")) {
+            return "0";
+        }
+
+        // Build the final string output
+        StringBuilder sb = new StringBuilder();
+        for (String str : strNums) {
+            sb.append(str);
+        }
+
+        return sb.toString();
+    }
+}
